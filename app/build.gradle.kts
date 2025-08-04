@@ -13,10 +13,20 @@ repositories {
     mavenCentral()
 }
 
+tasks.withType<JavaCompile> {
+    options.annotationProcessorPath = files(
+        configurations.getByName("annotationProcessor")
+    )
+}
+
+
 dependencies {
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
+    implementation("info.picocli:picocli:4.7.7")
+    annotationProcessor("info.picocli:picocli-codegen:4.7.7")
 }
+
 
 tasks.test {
     useJUnitPlatform()
@@ -25,6 +35,7 @@ tasks.test {
 application {
     mainClass = "hexlet.code.App"
 }
+
 
 tasks.named<DependencyUpdatesTask>("dependencyUpdates").configure {
     // Просто строка с разделителями-запятыми
