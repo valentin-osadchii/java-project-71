@@ -25,6 +25,9 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter")
     implementation("info.picocli:picocli:4.7.7")
     annotationProcessor("info.picocli:picocli-codegen:4.7.7")
+    implementation("com.fasterxml.jackson.core:jackson-core:2.19.2") // Replace with the latest version
+    implementation("com.fasterxml.jackson.core:jackson-annotations:2.19.2")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.19.2") // Replace with the latest version
 }
 
 
