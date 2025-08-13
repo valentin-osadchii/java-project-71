@@ -5,6 +5,18 @@ import picocli.CommandLine.Option;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Parameters;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.util.Map;
+
 @Command(
         name = "gendiff",
         description = "Compares two configuration files and shows a difference.",
@@ -35,6 +47,59 @@ public class App implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("Using format: " + format);
+        try {
+            System.out.println("Reading file 1: " + filepath1);
+            String file1Content = readFileContent(filepath1);
+            System.out.println("Reading file 2: " + filepath2);
+            String file2Content = readFileContent(filepath2);
+
+            System.out.println("Using format: " + format);
+            System.out.println("\nFile 1 content:\n" + file1Content);
+            System.out.println("File 2 content:\n" + file2Content);
+
+            // Парсинг происходит внутри try-блока
+            Map<String, Object> data1 = parseJsonToMap(file1Content, filepath1);
+            Map<String, Object> data2 = parseJsonToMap(file2Content, filepath2);
+
+            // Здесь будет логика сравнения файлов
+            // String diff = generateDiff(data1, data2, format);
+            // System.out.println(diff);
+
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getMessage());
+            System.exit(1);
+        }
+
     }
+
+    private String readFileContent(String filePath) throws IOException {
+        // Преобразуем путь в абсолютный и нормализуем (разрешаем .. и .)
+        Path path = Paths.get(filePath).toAbsolutePath().normalize();
+
+        // Проверка существования файла
+        if (!Files.exists(path)) {
+            throw new IOException("File not found: " + filePath);
+        }
+
+        // Проверка, что это файл, а не директория
+        if (!Files.isRegularFile(path)) {
+            throw new IOException("Path is not a file: " + filePath);
+        }
+
+        // Чтение содержимого с явным указанием кодировки
+        return new String(Files.readAllBytes(path), StandardCharsets.UTF_8);
+    }
+
+    private Map<String, Object> parseJsonToMap(String jsonContent, String fileName) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            return objectMapper.readValue(
+                    jsonContent,
+                    new TypeReference<Map<String, Object>>() {}
+            );
+        } catch (JsonProcessingException e) {
+            throw new IOException("Error parsing JSON in " + fileName + ": " + e.getMessage(), e);
+        }
+    }
+
 }
