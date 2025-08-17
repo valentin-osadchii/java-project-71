@@ -55,11 +55,6 @@ dependencies {
     testImplementation("com.fasterxml.jackson.core:jackson-databind:2.19.2")
 }
 
-
-tasks.test {
-    useJUnitPlatform()
-}
-
 application {
     mainClass = "hexlet.code.App"
 }
