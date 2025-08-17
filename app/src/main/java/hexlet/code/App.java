@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.Callable;
 
 @Command(
         name = "gendiff",
@@ -26,7 +27,7 @@ import java.util.Set;
         version = "gendiff 1.0"           // Версия для опции --version
 )
 
-public class App implements Runnable {
+public class App implements Callable<Integer> {
 
     @Parameters(index = "0", description = "path to first file")
     private String filepath1;
@@ -41,14 +42,13 @@ public class App implements Runnable {
     private String format;
 
     public static void main(String[] args) {
-        // Важно: используем execute(), а не просто new CommandLine()
         int exitCode = new CommandLine(new App()).execute(args);
         System.exit(exitCode);
     }
 
 
     @Override
-    public void run() {
+    public Integer call() throws Exception{
         try {
             System.out.println("Reading file 1: " + filepath1);
             String file1Content = readFileContent(filepath1);
@@ -63,13 +63,13 @@ public class App implements Runnable {
             Map<String, Object> data1 = parseJsonToMap(file1Content, filepath1);
             Map<String, Object> data2 = parseJsonToMap(file2Content, filepath2);
 
-            // Здесь будет логика сравнения файлов
             String diff = generateDiff(data1, data2);
             System.out.println(diff);
+            return 0; // Успешное завершение
 
         } catch (Exception e) {
             System.err.println("Error: " + e.getMessage());
-            System.exit(1);
+            return 1; // Код ошибки
         }
 
     }
