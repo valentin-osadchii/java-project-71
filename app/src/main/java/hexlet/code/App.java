@@ -48,7 +48,7 @@ public class App implements Callable<Integer> {
 
 
     @Override
-    public Integer call() throws Exception{
+    public Integer call() throws Exception {
         try {
             System.out.println("Reading file 1: " + filepath1);
             String file1Content = readFileContent(filepath1);
@@ -127,7 +127,7 @@ public class App implements Callable<Integer> {
         try {
             return objectMapper.readValue(
                     jsonContent,
-                    new TypeReference<Map<String, Object>>() {}
+                    new TypeReference<Map<String, Object>>() { }
             );
         } catch (JsonProcessingException e) {
             throw new IOException("Error parsing JSON in " + fileName + ": " + e.getMessage(), e);

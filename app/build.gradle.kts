@@ -6,6 +6,7 @@ plugins {
     id("application")
     id("checkstyle")
     id("org.sonarqube") version "6.2.0.5505"
+    id("jacoco")
 }
 
 group = "hexlet.code"
@@ -21,6 +22,26 @@ tasks.withType<JavaCompile> {
     )
 }
 
+tasks.check {
+    dependsOn(tasks.checkstyleMain, tasks.checkstyleTest)
+}
+
+tasks.build {
+    dependsOn(tasks.check)
+}
+
+tasks.test {
+    useJUnitPlatform()
+    finalizedBy(tasks.jacocoTestReport) // Для генерации отчета о покрытии
+}
+
+tasks.jacocoTestReport {
+    dependsOn(tasks.test)
+    reports {
+        xml.required.set(true) // SonarQube требует XML отчет
+        html.required.set(true)
+    }
+}
 
 dependencies {
     testImplementation(platform("org.junit:junit-bom:5.10.0"))

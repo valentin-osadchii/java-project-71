@@ -23,9 +23,9 @@ class AppTest {
 
         // Парсим JSON в Map
         Map<String, Object> before = objectMapper.readValue(beforeJson,
-                new com.fasterxml.jackson.core.type.TypeReference<Map<String, Object>>() {});
+                new com.fasterxml.jackson.core.type.TypeReference<Map<String, Object>>() { });
         Map<String, Object> after = objectMapper.readValue(afterJson,
-                new com.fasterxml.jackson.core.type.TypeReference<Map<String, Object>>() {});
+                new com.fasterxml.jackson.core.type.TypeReference<Map<String, Object>>() { });
 
         // Ожидаемый результат
         String expected = """
