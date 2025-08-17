@@ -15,7 +15,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 @Command(
         name = "gendiff",
@@ -62,14 +64,44 @@ public class App implements Runnable {
             Map<String, Object> data2 = parseJsonToMap(file2Content, filepath2);
 
             // Здесь будет логика сравнения файлов
-            // String diff = generateDiff(data1, data2, format);
-            // System.out.println(diff);
+            String diff = generateDiff(data1, data2);
+            System.out.println(diff);
 
         } catch (Exception e) {
             System.err.println("Error: " + e.getMessage());
             System.exit(1);
         }
 
+    }
+
+    public static String generateDiff(Map<String, Object> data1, Map<String, Object> data2) {
+        Set<String> uniqueKeys = new HashSet<>();
+        uniqueKeys.addAll(data1.keySet());
+        uniqueKeys.addAll(data2.keySet());
+
+        StringBuilder result = new StringBuilder("{\n");
+
+        for (String key : uniqueKeys.stream().sorted().toList()) {
+            boolean inFirst = data1.containsKey(key);
+            boolean inSecond = data2.containsKey(key);
+
+            if (inFirst && inSecond) {
+                Object value1 = data1.get(key);
+                Object value2 = data2.get(key);
+                if (value1.equals(value2)) {
+                    result.append("    ").append(key).append(": ").append(value1).append("\n");
+                } else {
+                    result.append("  - ").append(key).append(": ").append(value1).append("\n");
+                    result.append("  + ").append(key).append(": ").append(value2).append("\n");
+                }
+            } else if (inFirst) {
+                result.append("  - ").append(key).append(": ").append(data1.get(key)).append("\n");
+            } else {
+                result.append("  + ").append(key).append(": ").append(data2.get(key)).append("\n");
+            }
+        }
+        result.append("}");
+        return result.toString();
     }
 
     private String readFileContent(String filePath) throws IOException {
