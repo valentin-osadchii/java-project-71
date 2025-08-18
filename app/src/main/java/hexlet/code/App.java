@@ -1,5 +1,6 @@
 package hexlet.code;
 
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import picocli.CommandLine;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Command;
@@ -50,6 +51,9 @@ public class App implements Callable<Integer> {
     @Override
     public Integer call() throws Exception {
         try {
+            // Добавляем проверку на одинаковое расширение файлов
+            validateFileExtensions();
+
             System.out.println("Reading file 1: " + filepath1);
             String file1Content = readFileContent(filepath1);
             System.out.println("Reading file 2: " + filepath2);
@@ -60,8 +64,8 @@ public class App implements Callable<Integer> {
             System.out.println("File 2 content:\n" + file2Content);
 
             // Парсинг происходит внутри try-блока
-            Map<String, Object> data1 = parseJsonToMap(file1Content, filepath1);
-            Map<String, Object> data2 = parseJsonToMap(file2Content, filepath2);
+            Map<String, Object> data1 = parseFileToMap(file1Content, filepath1);
+            Map<String, Object> data2 = parseFileToMap(file2Content, filepath2);
 
             String diff = generateDiff(data1, data2);
             System.out.println(diff);
@@ -73,6 +77,52 @@ public class App implements Callable<Integer> {
         }
 
     }
+
+    /**
+     * Проверяет, что оба файла имеют одинаковое расширение.
+     */
+    private void validateFileExtensions() throws IOException {
+        String ext1 = getFileExtension(filepath1);
+        String ext2 = getFileExtension(filepath2);
+
+        if (!ext1.equals(ext2)) {
+            throw new IOException("Files must have the same extension. "
+                    + "First file has ." + ext1 + " extension, "
+                    + "second file has ." + ext2 + " extension");
+        }
+
+        // Дополнительная проверка на поддерживаемые форматы
+        if (!ext1.equals("json") && !ext1.equals("yaml") && !ext1.equals("yml")) {
+            throw new IOException("Unsupported file format: ." + ext1
+                    + ". Supported formats are: json, yaml, yml");
+        }
+    }
+
+    /**
+     * @param filePath Путь к файлу.
+     * @return Расширение файла в нижнем регистре.
+     */
+    private String getFileExtension(String filePath) {
+        Path path = Paths.get(filePath);
+        String fileName = path.getFileName().toString();
+
+        int dotIndex = fileName.lastIndexOf('.');
+        if (dotIndex > 0 && dotIndex < fileName.length() - 1) {
+            return fileName.substring(dotIndex + 1).toLowerCase();
+        }
+        return "";
+    }
+
+    private Map<String, Object> parseFileToMap(String content, String filePath) throws IOException {
+        if (filePath.endsWith(".json")) {
+            return parseJsonToMap(content, filePath);
+        } else if (filePath.endsWith(".yaml") || filePath.endsWith(".yml")) {
+            return parseYamlToMap(content, filePath);
+        } else {
+            throw new IOException("Unsupported file format: " + filePath);
+        }
+    }
+
 
     public static String generateDiff(Map<String, Object> data1, Map<String, Object> data2) {
         Set<String> uniqueKeys = new HashSet<>();
@@ -131,6 +181,18 @@ public class App implements Callable<Integer> {
             );
         } catch (JsonProcessingException e) {
             throw new IOException("Error parsing JSON in " + fileName + ": " + e.getMessage(), e);
+        }
+    }
+
+    private Map<String, Object> parseYamlToMap(String yamlContent, String fileName) throws IOException {
+        ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
+        try {
+            return yamlMapper.readValue(
+                    yamlContent,
+                    new TypeReference<Map<String, Object>>() { }
+            );
+        } catch (JsonProcessingException e) {
+            throw new IOException("Error parsing YAML in " + fileName + ": " + e.getMessage(), e);
         }
     }
 

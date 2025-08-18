@@ -7,7 +7,7 @@ import java.nio.file.Path;
 import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class AppTest {
+class YamlDIffTest {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 

@@ -53,6 +53,7 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-databind:2.19.2") // Replace with the latest version
     testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
     testImplementation("com.fasterxml.jackson.core:jackson-databind:2.19.2")
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.19.2")
 }
 
 application {
