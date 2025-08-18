@@ -1,6 +1,5 @@
 package hexlet.code;
 
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import picocli.CommandLine;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Command;
@@ -11,10 +10,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -64,8 +59,8 @@ public class App implements Callable<Integer> {
             System.out.println("File 2 content:\n" + file2Content);
 
             // Парсинг происходит внутри try-блока
-            Map<String, Object> data1 = parseFileToMap(file1Content, filepath1);
-            Map<String, Object> data2 = parseFileToMap(file2Content, filepath2);
+            Map<String, Object> data1 = Parser.parseFileToMap(file1Content, filepath1);
+            Map<String, Object> data2 = Parser.parseFileToMap(file2Content, filepath2);
 
             String diff = generateDiff(data1, data2);
             System.out.println(diff);
@@ -111,16 +106,6 @@ public class App implements Callable<Integer> {
             return fileName.substring(dotIndex + 1).toLowerCase();
         }
         return "";
-    }
-
-    private Map<String, Object> parseFileToMap(String content, String filePath) throws IOException {
-        if (filePath.endsWith(".json")) {
-            return parseJsonToMap(content, filePath);
-        } else if (filePath.endsWith(".yaml") || filePath.endsWith(".yml")) {
-            return parseYamlToMap(content, filePath);
-        } else {
-            throw new IOException("Unsupported file format: " + filePath);
-        }
     }
 
 
@@ -170,30 +155,6 @@ public class App implements Callable<Integer> {
 
         // Чтение содержимого с явным указанием кодировки
         return new String(Files.readAllBytes(path), StandardCharsets.UTF_8);
-    }
-
-    private Map<String, Object> parseJsonToMap(String jsonContent, String fileName) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            return objectMapper.readValue(
-                    jsonContent,
-                    new TypeReference<Map<String, Object>>() { }
-            );
-        } catch (JsonProcessingException e) {
-            throw new IOException("Error parsing JSON in " + fileName + ": " + e.getMessage(), e);
-        }
-    }
-
-    private Map<String, Object> parseYamlToMap(String yamlContent, String fileName) throws IOException {
-        ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
-        try {
-            return yamlMapper.readValue(
-                    yamlContent,
-                    new TypeReference<Map<String, Object>>() { }
-            );
-        } catch (JsonProcessingException e) {
-            throw new IOException("Error parsing YAML in " + fileName + ": " + e.getMessage(), e);
-        }
     }
 
 }
