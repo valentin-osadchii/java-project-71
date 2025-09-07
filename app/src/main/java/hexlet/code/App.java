@@ -11,10 +11,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
 import java.util.concurrent.Callable;
 
 @Command(
@@ -63,7 +61,7 @@ public class App implements Callable<Integer> {
             Map<String, Object> data1 = Parser.parseFileToMap(file1Content, filepath1);
             Map<String, Object> data2 = Parser.parseFileToMap(file2Content, filepath2);
 
-            String diff = generateDiff(data1, data2);
+            String diff = generateDiff(data1, data2, format);
             System.out.println(diff);
             return 0; // Успешное завершение
 
@@ -111,34 +109,17 @@ public class App implements Callable<Integer> {
 
 
     public static String generateDiff(Map<String, Object> data1, Map<String, Object> data2) {
-        Set<String> uniqueKeys = new HashSet<>();
-        uniqueKeys.addAll(data1.keySet());
-        uniqueKeys.addAll(data2.keySet());
-
-        StringBuilder result = new StringBuilder("{\n");
-
-        for (String key : uniqueKeys.stream().sorted().toList()) {
-            boolean inFirst = data1.containsKey(key);
-            boolean inSecond = data2.containsKey(key);
-
-            if (inFirst && inSecond) {
-                Object value1 = data1.get(key);
-                Object value2 = data2.get(key);
-                if (Objects.equals(value1, value2)) {
-                    result.append("    ").append(key).append(": ").append(value1).append("\n");
-                } else {
-                    result.append("  - ").append(key).append(": ").append(value1).append("\n");
-                    result.append("  + ").append(key).append(": ").append(value2).append("\n");
-                }
-            } else if (inFirst) {
-                result.append("  - ").append(key).append(": ").append(data1.get(key)).append("\n");
-            } else {
-                result.append("  + ").append(key).append(": ").append(data2.get(key)).append("\n");
-            }
-        }
-        result.append("}");
-        return result.toString();
+        return generateDiff(data1, data2, "stylish");
     }
+
+    public static String generateDiff(Map<String, Object> data1, Map<String, Object> data2, String formatType) {
+        DiffBuilder diffBuilder = new DiffBuilder();
+        List<DiffEntry> diffEntries = diffBuilder.buildDiff(data1, data2);
+
+        Formatter formatter = FormatterFactory.create(formatType);
+        return formatter.format(diffEntries);
+    }
+
 
     private String readFileContent(String filePath) throws IOException {
         // Преобразуем путь в абсолютный и нормализуем (разрешаем .. и .)
