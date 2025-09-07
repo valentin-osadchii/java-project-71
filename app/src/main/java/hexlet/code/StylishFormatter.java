@@ -30,6 +30,8 @@ public class StylishFormatter implements Formatter {
                     result.append("  + ").append(entry.getKey())
                             .append(": ").append(entry.getNewValue()).append("\n");
                     break;
+                default:
+                    break;
             }
         }
 

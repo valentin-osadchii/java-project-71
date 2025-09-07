@@ -1,6 +1,12 @@
 package hexlet.code;
 
-import java.util.*;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.ArrayList;
+import java.util.Objects;
 
 public class DiffBuilder {
     public List<DiffEntry> buildDiff(Map<String, Object> data1, Map<String, Object> data2) {

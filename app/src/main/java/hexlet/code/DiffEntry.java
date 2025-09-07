@@ -35,13 +35,17 @@ public class DiffEntry {
     // Переопределение equals
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         DiffEntry diffEntry = (DiffEntry) o;
-        return Objects.equals(key, diffEntry.key) &&
-                status == diffEntry.status &&
-                Objects.equals(oldValue, diffEntry.oldValue) &&
-                Objects.equals(newValue, diffEntry.newValue);
+        return Objects.equals(key, diffEntry.key)
+                && status == diffEntry.status
+                && Objects.equals(oldValue, diffEntry.oldValue)
+                && Objects.equals(newValue, diffEntry.newValue);
     }
 
     // Переопределение hashCode
