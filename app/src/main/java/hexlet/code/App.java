@@ -13,6 +13,7 @@ import java.nio.file.Paths;
 
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.Callable;
 
@@ -123,7 +124,7 @@ public class App implements Callable<Integer> {
             if (inFirst && inSecond) {
                 Object value1 = data1.get(key);
                 Object value2 = data2.get(key);
-                if (value1.equals(value2)) {
+                if (Objects.equals(value1, value2)) {
                     result.append("    ").append(key).append(": ").append(value1).append("\n");
                 } else {
                     result.append("  - ").append(key).append(": ").append(value1).append("\n");
