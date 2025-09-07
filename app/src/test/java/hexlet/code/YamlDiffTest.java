@@ -1,41 +1,69 @@
 package hexlet.code;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class YamlDiffTest {
-
+    private final ObjectMapper yamlObjectMapper = new ObjectMapper(
+            new com.fasterxml.jackson.dataformat.yaml.YAMLFactory()
+    );
     // Базовый тест для YAML файлов из задания
     @Test
-    void testYamlFilesDiff() {
-        Map<String, Object> yaml1 = Map.of(
-                "host", "hexlet.io",
-                "timeout", 50,
-                "proxy", "123.234.53.22",
-                "follow", false
+    void testYamlFilesDiff() throws Exception {
+        // Загружаем тестовые данные
+        String beforeYaml = Files.readString(
+                Path.of("src/test/resources/file1nested.yaml")
+        );
+        String afterYaml = Files.readString(
+                Path.of("src/test/resources/file2nested.yaml")
         );
 
-        Map<String, Object> yaml2 = Map.of(
-                "timeout", 20,
-                "verbose", true,
-                "host", "hexlet.io"
-        );
+        // Парсим JSON в Map
+        Map<String, Object> before = yamlObjectMapper.readValue(beforeYaml,
+                new com.fasterxml.jackson.core.type.TypeReference<Map<String, Object>>() { });
+        Map<String, Object> after = yamlObjectMapper.readValue(afterYaml,
+                new com.fasterxml.jackson.core.type.TypeReference<Map<String, Object>>() { });
 
+        // Ожидаемый результат с правильными отступами и форматированием
         String expected = """
             {
-                - follow: false
-                  host: hexlet.io
-                - proxy: 123.234.53.22
-                - timeout: 50
-                + timeout: 20
-                + verbose: true
+                chars1: [a, b, c]
+              - chars2: [d, e, f]
+              + chars2: false
+              - checked: false
+              + checked: true
+              - default: null
+              + default: [value1, value2]
+              - id: 45
+              + id: null
+              - key1: value1
+              + key2: value2
+                numbers1: [1, 2, 3, 4]
+              - numbers2: [2, 3, 4, 5]
+              + numbers2: [22, 33, 44, 55]
+              - numbers3: [3, 4, 5]
+              + numbers4: [4, 5, 6]
+              + obj1: {nestedKey=value, isNested=true}
+              - setting1: Some value
+              + setting1: Another value
+              - setting2: 200
+              + setting2: 300
+              - setting3: true
+              + setting3: none
             }""";
 
-        assertEquals(normalizeSpaces(expected),
-                normalizeSpaces(App.generateDiff(yaml1, yaml2)));
+        // Получаем реальный результат
+        String actual = App.generateDiff(before, after);
+
+        assertEquals(normalizeSpaces(expected),  normalizeSpaces(actual));
     }
 
     // Тест для одинаковых YAML файлов
