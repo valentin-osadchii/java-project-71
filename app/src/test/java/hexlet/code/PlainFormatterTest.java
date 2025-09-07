@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class PlainTextFormatterTest {
+class PlainFormatterTest {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
