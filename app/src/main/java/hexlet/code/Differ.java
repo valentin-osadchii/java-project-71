@@ -105,7 +105,7 @@ public class Differ {
 
         String diff = generateDiff(data1, data2, format);
         System.out.println(diff);
-        return(diff);
+        return (diff);
     }
 
     private static String getFormat(String filePath) {

@@ -5,7 +5,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
-import java.io.IOException;
 import java.util.Map;
 
 public class Parser {
@@ -21,11 +20,11 @@ public class Parser {
 
     private static Map<String, Object> parseYaml(String yamlContent) throws JsonProcessingException {
         ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
-        return yamlMapper.readValue(yamlContent, new TypeReference<>() {});
+        return yamlMapper.readValue(yamlContent, new TypeReference<>() { });
     }
 
     private static Map<String, Object> parseJson(String jsonContent) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.readValue(jsonContent, new TypeReference<>() {});
+        return objectMapper.readValue(jsonContent, new TypeReference<>() { });
     }
 }
