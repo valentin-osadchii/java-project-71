@@ -4,7 +4,7 @@ import hexlet.code.DiffEntry;
 import hexlet.code.Formatter;
 import java.util.List;
 
-public class PlainFormatter implements Formatter {
+public final class PlainFormatter implements Formatter {
     @Override
     public String format(List<DiffEntry> diffEntries) {
         StringBuilder result = new StringBuilder();

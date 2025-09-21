@@ -8,7 +8,7 @@ import java.util.TreeSet;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class DiffBuilder {
+public final class DiffBuilder {
     public List<DiffEntry> buildDiff(Map<String, Object> data1, Map<String, Object> data2) {
         Set<String> uniqueKeys = new TreeSet<>(data1.keySet());
         uniqueKeys.addAll(data2.keySet());

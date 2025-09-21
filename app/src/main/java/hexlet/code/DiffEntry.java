@@ -2,7 +2,7 @@ package hexlet.code;
 
 import java.util.Objects;
 
-public class DiffEntry {
+public final class DiffEntry {
     private final String key;
     private final DiffStatus status;
     private final Object oldValue;
