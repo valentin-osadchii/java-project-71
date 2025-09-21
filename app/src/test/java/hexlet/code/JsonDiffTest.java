@@ -56,7 +56,7 @@ class JsonDiffTest {
             }""";
 
         // Получаем реальный результат
-        String actual = App.generateDiff(before, after);
+        String actual = Differ.generateDiff(before, after);
 
         // Сравниваем с нормализацией пробелов
         assertEquals(normalizeSpaces(expected), normalizeSpaces(actual));
@@ -82,7 +82,7 @@ class JsonDiffTest {
             }""";
 
         assertEquals(normalizeSpaces(expected),
-                normalizeSpaces(App.generateDiff(data1, data2)));
+                normalizeSpaces(Differ.generateDiff(data1, data2)));
     }
 
     // Тест для файлов с разным порядком ключей
@@ -108,7 +108,7 @@ class JsonDiffTest {
             }""";
 
         assertEquals(normalizeSpaces(expected),
-                normalizeSpaces(App.generateDiff(data1, data2)));
+                normalizeSpaces(Differ.generateDiff(data1, data2)));
     }
 
     // Тест для файлов с разными типами данных
@@ -136,7 +136,7 @@ class JsonDiffTest {
             }""";
 
         assertEquals(normalizeSpaces(expected),
-                normalizeSpaces(App.generateDiff(data1, data2)));
+                normalizeSpaces(Differ.generateDiff(data1, data2)));
     }
 
     // Тест для одного пустого файла
@@ -153,7 +153,7 @@ class JsonDiffTest {
             }""";
 
         assertEquals(normalizeSpaces(expected),
-                normalizeSpaces(App.generateDiff(data1, data2)));
+                normalizeSpaces(Differ.generateDiff(data1, data2)));
     }
 
 

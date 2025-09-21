@@ -45,7 +45,7 @@ class PlainFormatterTest {
                 Property 'setting3' was updated. From true to 'none'""";
 
         // Получаем реальный результат, указывая тип форматтера "plain-text"
-        String actual = App.generateDiff(before, after, "plain");
+        String actual = Differ.generateDiff(before, after, "plain");
 
         // Сравниваем результаты
         assertEquals(expected, actual);
@@ -65,7 +65,7 @@ class PlainFormatterTest {
         );
 
         String expected = "";
-        String actual = App.generateDiff(data1, data2, "plain");
+        String actual = Differ.generateDiff(data1, data2, "plain");
         assertEquals(expected, actual);
     }
 
@@ -85,7 +85,7 @@ class PlainFormatterTest {
         );
 
         String expected = "";
-        String actual = App.generateDiff(data1, data2, "plain");
+        String actual = Differ.generateDiff(data1, data2, "plain");
         assertEquals(expected, actual);
     }
 
@@ -108,7 +108,7 @@ class PlainFormatterTest {
             Property 'boolean' was updated. From true to false
             Property 'number' was updated. From 42 to '42'""";
 
-        String actual = App.generateDiff(data1, data2, "plain");
+        String actual = Differ.generateDiff(data1, data2, "plain");
         assertEquals(expected, actual);
     }
 
@@ -121,7 +121,7 @@ class PlainFormatterTest {
         );
 
         String expected = "Property 'key' was added with value: 'value'";
-        String actual = App.generateDiff(data1, data2, "plain");
+        String actual = Differ.generateDiff(data1, data2, "plain");
         assertEquals(expected, actual);
     }
 
@@ -147,7 +147,7 @@ class PlainFormatterTest {
             Property 'object' was updated. From [complex value] to [complex value]
             Property 'simple' was updated. From 'value' to 'new_value'""";
 
-        String actual = App.generateDiff(data1, data2, "plain");
+        String actual = Differ.generateDiff(data1, data2, "plain");
         assertEquals(expected, actual);
     }
 

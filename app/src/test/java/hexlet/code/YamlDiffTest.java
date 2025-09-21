@@ -60,7 +60,7 @@ class YamlDiffTest {
             }""";
 
         // Получаем реальный результат
-        String actual = App.generateDiff(before, after);
+        String actual = Differ.generateDiff(before, after);
 
         assertEquals(normalizeSpaces(expected),  normalizeSpaces(actual));
     }
@@ -88,7 +88,7 @@ class YamlDiffTest {
             }""";
 
         assertEquals(normalizeSpaces(expected),
-                normalizeSpaces(App.generateDiff(data1, data2)));
+                normalizeSpaces(Differ.generateDiff(data1, data2)));
     }
 
     // Тест для YAML файлов с разным порядком ключей
@@ -114,7 +114,7 @@ class YamlDiffTest {
             }""";
 
         assertEquals(normalizeSpaces(expected),
-                normalizeSpaces(App.generateDiff(data1, data2)));
+                normalizeSpaces(Differ.generateDiff(data1, data2)));
     }
 
     // Тест для YAML файлов с разными типами данных
@@ -142,7 +142,7 @@ class YamlDiffTest {
             }""";
 
         assertEquals(normalizeSpaces(expected),
-                normalizeSpaces(App.generateDiff(data1, data2)));
+                normalizeSpaces(Differ.generateDiff(data1, data2)));
     }
 
     // Тест для одного пустого YAML файла
@@ -161,7 +161,7 @@ class YamlDiffTest {
             }""";
 
         assertEquals(normalizeSpaces(expected),
-                normalizeSpaces(App.generateDiff(data1, data2)));
+                normalizeSpaces(Differ.generateDiff(data1, data2)));
     }
 
     // Тест для YAML с вложенными структурами (плоские файлы, но проверка обработки простых структур)
@@ -177,7 +177,7 @@ class YamlDiffTest {
                 "active", true
         );
 
-        String actual = normalizeSpaces(App.generateDiff(data1, data2));
+        String actual = normalizeSpaces(Differ.generateDiff(data1, data2));
 
         // Проверяем основные компоненты, не завися от порядка
         assertTrue(actual.contains("- user: {"));
