@@ -5,7 +5,7 @@ import hexlet.code.DiffEntry;
 import hexlet.code.Formatter;
 
 import java.util.List;
-public class JsonFormatter implements Formatter {
+public final class JsonFormatter implements Formatter {
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     @Override

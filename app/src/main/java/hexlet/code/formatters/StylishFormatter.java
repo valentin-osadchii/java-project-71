@@ -5,7 +5,7 @@ import hexlet.code.Formatter;
 
 import java.util.List;
 
-public class StylishFormatter implements Formatter {
+public final class StylishFormatter implements Formatter {
     @Override
     public String format(List<DiffEntry> diffEntries) {
         StringBuilder result = new StringBuilder("{\n");
