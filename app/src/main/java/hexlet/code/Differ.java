@@ -85,18 +85,32 @@ public class Differ {
 
         System.out.println("Reading file 1: " + filepath1);
         String file1Content = readFileContent(filepath1);
+        String file1Format = getFormat(filepath1);
         System.out.println("Reading file 2: " + filepath2);
         String file2Content = readFileContent(filepath2);
+        String file2Format = getFormat(filepath1);
 
         System.out.println("Using format: " + format);
         System.out.println("\nFile 1 content:\n" + file1Content);
         System.out.println("File 2 content:\n" + file2Content);
 
+
+
         // Парсинг происходит внутри try-блока
-        Map<String, Object> data1 = Parser.parseFileToMap(file1Content, filepath1);
-        Map<String, Object> data2 = Parser.parseFileToMap(file2Content, filepath2);
+        Map<String, Object> data1 = Parser.toMap(file1Content, file1Format);
+        Map<String, Object> data2 = Parser.toMap(file2Content, file2Format);
 
         String diff = generateDiff(data1, data2, format);
         System.out.println(diff);
     }
+
+    private static String getFormat(String filePath) {
+        String fileName = Paths.get(filePath).getFileName().toString();
+        int dotIndex = fileName.lastIndexOf('.');
+        if (dotIndex > 0) {
+            return fileName.substring(dotIndex + 1);
+        }
+        throw new IllegalArgumentException("Cannot determine format: " + filePath);
+    }
+
 }
