@@ -80,7 +80,7 @@ public class Differ {
         return new String(Files.readAllBytes(path), StandardCharsets.UTF_8);
     }
 
-    static void generate(String filepath1, String filepath2, String format) throws IOException {
+    static String generate(String filepath1, String filepath2, String format) throws IOException {
         validateFileExtensions(filepath1, filepath2);
 
         System.out.println("Reading file 1: " + filepath1);
@@ -102,6 +102,7 @@ public class Differ {
 
         String diff = generateDiff(data1, data2, format);
         System.out.println(diff);
+        return(diff);
     }
 
     private static String getFormat(String filePath) {
