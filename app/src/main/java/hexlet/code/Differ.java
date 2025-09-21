@@ -86,20 +86,12 @@ public class Differ {
     public static String generate(String filepath1, String filepath2, String format) throws IOException {
         validateFileExtensions(filepath1, filepath2);
 
-        System.out.println("Reading file 1: " + filepath1);
         String file1Content = readFileContent(filepath1);
         String file1Format = getFormat(filepath1);
-        System.out.println("Reading file 2: " + filepath2);
+
         String file2Content = readFileContent(filepath2);
         String file2Format = getFormat(filepath1);
 
-        System.out.println("Using format: " + format);
-        System.out.println("\nFile 1 content:\n" + file1Content);
-        System.out.println("File 2 content:\n" + file2Content);
-
-
-
-        // Парсинг происходит внутри try-блока
         Map<String, Object> data1 = Parser.toMap(file1Content, file1Format);
         Map<String, Object> data2 = Parser.toMap(file2Content, file2Format);
 
