@@ -2,6 +2,21 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=valentin-osadchii_java-project-71&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=valentin-osadchii_java-project-71)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=valentin-osadchii_java-project-71&metric=coverage)](https://sonarcloud.io/summary/new_code?id=valentin-osadchii_java-project-71)
 
+Command-line приложение на Java для сравнения двух файлов и отображения изменений между ними
+Поддерживает два формата файлов:
+- json
+- yaml
+
+Форматы файлов должны совпадать.
+
+Вывод результата возможен в трех форматах:
+- stylish (по умолчанию)
+- plain
+- json
+
+Сравнение происходит не рекурсивно: изменения во вложенных структурах (объектах) не обрабатываются.
+Содерждимое таких объектов отображается как [complex value].
+
 ## Пример использования
 
 ### Справка
@@ -23,44 +38,6 @@ Compares two configuration files and shows a difference.
 ```bash
 $  ./build/install/app/bin/app examples/file1nested.json examples/file2nested.json
 
-Reading file 1: examples/file1nested.json
-Reading file 2: examples/file2nested.json
-Using format: stylish
-
-File 1 content:
-{
-  "setting1": "Some value",
-  "setting2": 200,
-  "setting3": true,
-  "key1": "value1",
-  "numbers1": [1, 2, 3, 4],
-  "numbers2": [2, 3, 4, 5],
-  "id": 45,
-  "default": null,
-  "checked": false,
-  "numbers3": [3, 4, 5],
-  "chars1": ["a", "b", "c"],
-  "chars2": ["d", "e", "f"]
-}
-File 2 content:
-{
-  "setting1": "Another value",
-  "setting2": 300,
-  "setting3": "none",
-  "key2": "value2",
-  "numbers1": [1, 2, 3, 4],
-  "numbers2": [22, 33, 44, 55],
-  "id": null,
-  "default": ["value1", "value2"],
-  "checked": true,
-  "numbers4": [4, 5, 6],
-  "chars1": ["a", "b", "c"],
-  "chars2": false,
-  "obj1": {
-    "nestedKey": "value",
-    "isNested": true
-  }
-}
 {
     chars1: [a, b, c]
   - chars2: [d, e, f]
@@ -94,74 +71,6 @@ File 2 content:
 ```bash
 $  ./build/install/app/bin/app -f plain examples/file1nested.yaml examples/file2nested.yaml
 
-Reading file 1: examples/file1nested.yaml
-Reading file 2: examples/file2nested.yaml
-Using format: plain
-
-File 1 content:
-setting1: Some value
-setting2: 200
-setting3: true
-key1: value1
-numbers1:
-- 1
-- 2
-- 3
-- 4
-  numbers2:
-- 2
-- 3
-- 4
-- 5
-  id: 45
-  default: null
-  checked: false
-  numbers3:
-- 3
-- 4
-- 5
-  chars1:
-- a
-- b
-- c
-  chars2:
-- d
-- e
-- f
-
-File 2 content:
-setting1: Another value
-setting2: 300
-setting3: none
-key2: value2
-numbers1:
-- 1
-- 2
-- 3
-- 4
-  numbers2:
-- 22
-- 33
-- 44
-- 55
-  id: null
-  default:
-- value1
-- value2
-  checked: true
-  numbers4:
-- 4
-- 5
-- 6
-  chars1:
-- a
-- b
-- c
-  chars2: false
-  obj1:
-  nestedKey: value
-  isNested: true
-
 Property 'chars2' was updated. From [complex value] to false
 Property 'checked' was updated. From false to true
 Property 'default' was updated. From null to [complex value]
@@ -182,7 +91,6 @@ Property 'setting3' was updated. From true to 'none'
 
 ```bash
 $  ./build/install/app/bin/app -f json examples/file1nested.yaml examples/file2nested.yaml
-
 
 [{"key":"chars1","status":"UNCHANGED","oldValue":["a","b","c"],"newValue":["a","b","c"]},{"key":"chars2","status":"CHANGED","oldValue":["d","e","f"],"newValue":false},{"key":"checked","status":"CHANGED","oldValue":false,"newValue":true},{"key":"default","status":"CHANGED","oldValue":null,"newValue":["value1
 ","value2"]},{"key":"id","status":"CHANGED","oldValue":45,"newValue":null},{"key":"key1","status":"REMOVED","oldValue":"value1","newValue":null},{"key":"key2","status":"ADDED","oldValue":null,"newValue":"value2"},{"key":"numbers1","status":"UNCHANGED","oldValue":[1,2,3,4],"newValue":[1,2,3,4]},{"key":"numbe
