@@ -92,7 +92,7 @@ public class Differ {
         return (diff);
     }
 
-    private static String getFormat(String filePath) {
+    static String getFormat(String filePath) {
         String fileName = Paths.get(filePath).getFileName().toString();
         int dotIndex = fileName.lastIndexOf('.');
         if (dotIndex > 0) {
@@ -100,5 +100,7 @@ public class Differ {
         }
         throw new IllegalArgumentException("Cannot determine format: " + filePath);
     }
+
+
 
 }

@@ -156,6 +156,21 @@ public class DifferTest {
         );
     }
 
+    @Test
+    void testGetFormatMultipleDots() {
+        String filePath = "config.dev.json";
+        String expected = "json";
+        String actual = Differ.getFormat(filePath);
+        assertEquals(expected, actual, "Format should be extracted from last extension");
+    }
+
+    @Test
+    void testGetFormatNoExtension() {
+        String filePath = "config";
+        assertThrows(IllegalArgumentException.class, () -> {
+            Differ.getFormat(filePath);
+        }, "Should throw IllegalArgumentException for file without extension");
+    }
 
     private String normalizeSpaces(String input) {
         return input.replaceAll("\\s+", " ").trim();
