@@ -1,13 +1,22 @@
 package hexlet.code;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class DifferTest {
+
+    @TempDir
+    private Path tempDir;
+
     @Test
     void testJsonStylishFormat() throws Exception {
         String filepath1 = "src/test/resources/file1.json";
@@ -119,6 +128,34 @@ public class DifferTest {
 
         assertEquals(normalizeSpaces(expected), normalizeSpaces(actual));
     }
+
+    @Test
+    public void testDifferentExtensions() throws IOException {
+        String filepath1 = "src/test/resources/file1.json";
+        String filepath2 = "src/test/resources/file2.yaml";
+
+        assertThrows(IOException.class, () ->
+                Differ.generate(filepath1, filepath2)
+        );
+    }
+
+    @Test
+    public void testInvalidJson() throws IOException {
+        File file1 = tempDir.resolve("file1.json").toFile();
+        File file2 = tempDir.resolve("file2.json").toFile();
+
+        try (FileWriter writer = new FileWriter(file1)) {
+            writer.write("{ invalid json }");
+        }
+        try (FileWriter writer = new FileWriter(file2)) {
+            writer.write("{}");
+        }
+
+        assertThrows(Exception.class, () ->
+                Differ.generate(file1.getAbsolutePath(), file2.getAbsolutePath())
+        );
+    }
+
 
     private String normalizeSpaces(String input) {
         return input.replaceAll("\\s+", " ").trim();
