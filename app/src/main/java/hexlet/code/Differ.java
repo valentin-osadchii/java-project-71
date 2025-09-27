@@ -24,15 +24,6 @@ public class Differ {
                     + "second file has ." + ext2 + " extension");
         }
 
-        isSupportedFormat(ext1);
-    }
-
-    private static void isSupportedFormat(String ext1) throws IOException {
-        // Дополнительная проверка на поддерживаемые форматы
-        if (!ext1.equals("json") && !ext1.equals("yaml") && !ext1.equals("yml")) {
-            throw new IOException("Unsupported file format: ." + ext1
-                    + ". Supported formats are: json, yaml, yml");
-        }
     }
 
     /**
