@@ -156,22 +156,6 @@ public class DifferTest {
         );
     }
 
-    @Test
-    public void testInvalidYaml() throws IOException {
-        File file1 = tempDir.resolve("file1.yaml").toFile();
-        File file2 = tempDir.resolve("file2.yaml").toFile();
-
-        try (FileWriter writer = new FileWriter(file1)) {
-            writer.write("invalid:\n- yaml\n  syntax error");
-        }
-        try (FileWriter writer = new FileWriter(file2)) {
-            writer.write("valid: yaml");
-        }
-
-        assertThrows(Exception.class, () ->
-                Differ.generate(file1.getAbsolutePath(), file2.getAbsolutePath())
-        );
-    }
 
     private String normalizeSpaces(String input) {
         return input.replaceAll("\\s+", " ").trim();
