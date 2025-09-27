@@ -37,7 +37,7 @@ public final class PlainFormatter implements Formatter {
                     break;
 
                 default:
-                    break;
+                    throw new RuntimeException("Unknown status " + entry.getStatus());
             }
         }
 

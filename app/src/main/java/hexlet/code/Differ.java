@@ -41,11 +41,12 @@ public class Differ {
         return "";
     }
 
-    public static String generateDiff(Map<String, Object> data1, Map<String, Object> data2) {
+    public static String generateDiff(Map<String, Object> data1, Map<String, Object> data2) throws Exception {
         return generateDiff(data1, data2, "stylish");
     }
 
-    public static String generateDiff(Map<String, Object> data1, Map<String, Object> data2, String formatType) {
+    public static String generateDiff(Map<String, Object> data1, Map<String, Object> data2, String formatType)
+            throws Exception {
         DiffBuilder diffBuilder = new DiffBuilder();
         List<DiffEntry> diffEntries = diffBuilder.buildDiff(data1, data2);
 
@@ -71,10 +72,10 @@ public class Differ {
         return new String(Files.readAllBytes(path), StandardCharsets.UTF_8);
     }
 
-    public static String generate(String filepath1, String filepath2) throws IOException {
+    public static String generate(String filepath1, String filepath2) throws Exception {
         return generate(filepath1, filepath2, "stylish");
     }
-    public static String generate(String filepath1, String filepath2, String format) throws IOException {
+    public static String generate(String filepath1, String filepath2, String format) throws Exception {
         validateFileExtensions(filepath1, filepath2);
 
         String file1Content = readFileContent(filepath1);
