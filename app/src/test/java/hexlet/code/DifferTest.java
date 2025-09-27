@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class DifferTest {
 
     @TempDir
-    Path tempDir;
+    private Path tempDir;
 
     @Test
     void testJsonStylishFormat() throws Exception {
