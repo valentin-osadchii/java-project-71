@@ -9,11 +9,7 @@ public final class JsonFormatter implements Formatter {
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     @Override
-    public String format(List<DiffEntry> diffEntries) {
-        try {
-            return MAPPER.writeValueAsString(diffEntries);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to generate JSON", e);
-        }
+    public String format(List<DiffEntry> diffEntries) throws Exception {
+        return MAPPER.writeValueAsString(diffEntries);
     }
 }

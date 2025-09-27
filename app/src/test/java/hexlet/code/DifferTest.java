@@ -55,7 +55,7 @@ public class DifferTest {
         String filepath1 = "src/test/resources/file1.json";
         String filepath2 = "src/test/resources/file2.json";
 
-        String actual = Differ.generate(filepath1, filepath2, "stylish");
+        String actual = Differ.generate(filepath1, filepath2);
 
         String expected = Files.readString(
                 Path.of("src/test/resources/expectedDiffStylishFormat.txt")
@@ -111,7 +111,7 @@ public class DifferTest {
         String filepath1 = "src/test/resources/file1.yaml";
         String filepath2 = "src/test/resources/file2.yaml";
 
-        String actual = Differ.generate(filepath1, filepath2, "stylish");
+        String actual = Differ.generate(filepath1, filepath2);
 
         String expected = Files.readString(
                 Path.of("src/test/resources/expectedDiffStylishFormat.txt")
